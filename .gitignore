@@ -1,0 +1,23 @@
+node_modules/
+.env
+.DS_Store
+dist/
+coverage/
+logs
+npm-debug.log*
+
+# Editor settings
+.vscode/
+.idea/
+
+# System files
+Thumbs.db
+ehthumbs.db
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Uploads
+uploads/
