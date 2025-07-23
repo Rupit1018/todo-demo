@@ -10,10 +10,10 @@ const User = userModel(sequelize);
 export const createUser = async (userBody) => {
   const userExist = await User.findOne({ where: { email: userBody.email } });
   if (userExist) {
-    throw new Error("Email Allready exists");
+    throw new Error("Email already exists");
   }
-  const hashPass = bcrypt.hashSync(userBody.password, 10);
 
+  const hashPass = bcrypt.hashSync(userBody.password, 10);
   const newUser = await User.create({ ...userBody, password: hashPass });
 
   return newUser;

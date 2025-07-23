@@ -1,3 +1,4 @@
+// models/org.model.js
 import { DataTypes } from "sequelize";
 
 export const orgModel = (sequelize) => {
@@ -22,6 +23,14 @@ export const orgModel = (sequelize) => {
       underscored: true,
     }
   );
+
+  // ✅ Add association to Todo
+  Org.associate = (models) => {
+    Org.hasMany(models.Todo, {
+      foreignKey: "org_id", // match your field
+      onDelete: "CASCADE",  // this ensures todos are deleted when org is
+    });
+  };
 
   return Org;
 };

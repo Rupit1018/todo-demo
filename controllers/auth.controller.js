@@ -24,21 +24,28 @@ export const login = async (req, res) => {
   try {
     const checkUser = await authService.findUser(email);
     if (!checkUser) {
-      throw new Error("You Are Not Vaild User....!");
+      throw new Error("User not found.");
     }
-    const chekPass = bcrypt.compareSync(password, checkUser.password);
-    if (!chekPass) {
-      throw new Error("Your Password Is..!");
+
+    const isMatch = bcrypt.compareSync(password, checkUser.password);
+    if (!isMatch) {
+      throw new Error("Incorrect password.");
     }
+
     const token = await authService.createToken(checkUser);
+
     res.status(200).json({
-      data: token,
-      message: "Login Successfully.....!",
+      token,
+      user: {
+        id: checkUser.id,
+        name: checkUser.name,
+        email: checkUser.email,
+      },
+      message: "Login successful.",
     });
   } catch (error) {
-    res.status(404).json({
-      error: error.message,
-      message: "Error to Login .....!",
+    res.status(401).json({
+      message: error.message || "Login failed",
     });
   }
 };
@@ -48,7 +55,7 @@ export const forgotPassword = async (req, res) => {
   try {
     const checkUser = await authService.findUser(email);
     if (checkUser) {
-      const randomString = await authService.createRandomString();
+      const randomString = authService.createRandomString();
       const token = await authService.createTokenForForgotPass(
         email,
         randomString
@@ -130,3 +137,4 @@ export const resetPassword = async (req, res) => {
     });
   }
 };
+  

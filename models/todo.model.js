@@ -1,3 +1,4 @@
+// models/todo.model.js
 import { DataTypes } from "sequelize";
 
 export const todoModel = (sequelize) => {
@@ -20,7 +21,11 @@ export const todoModel = (sequelize) => {
         type: DataTypes.UUID,
         allowNull: false,
         field: "org_id",
-        references: { model: "orgs", key: "id" },
+        references: {
+          model: "orgs",
+          key: "id",
+        },
+        onDelete: "CASCADE", 
       },
       userId: {
         type: DataTypes.UUID,
@@ -34,5 +39,14 @@ export const todoModel = (sequelize) => {
       underscored: true,
     }
   );
+
+  // ✅ Define association (to Org)
+  Todo.associate = (models) => {
+    Todo.belongsTo(models.Org, {
+      foreignKey: "org_id", 
+      onDelete: "CASCADE", 
+    });
+  };
+
   return Todo;
-};
+};  
